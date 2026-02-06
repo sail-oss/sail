@@ -1,0 +1,15 @@
+apiVersion: sebi.org/v1
+kind: GenericAgent
+metadata:
+  name: audience-editor-agent
+  namespace: sail
+spec:
+  description: "Edits stories for a target audience"
+  userMessage: |
+    Analyze and rewrite the following story to better align
+    with the target audience is {sailMessage.inputs['audience-editor-agent']}.
+    Return only the story and nothing else.
+    The story is "{sailMessage.payload}".
+    Send the edited story to the style-editor-agent using the sendMessage tool.
+    Make sure to include the orignal inputs , {sailMessage.inputs},  in the SailMessage when sending the message but ignores it completely to generate the story.
+  systemMessage:  You are a professional editor called 'audience-editor-agent'

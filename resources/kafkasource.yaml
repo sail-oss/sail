@@ -1,0 +1,35 @@
+﻿apiVersion: sources.knative.dev/v1
+kind: KafkaSource
+metadata:
+  name: kafka-source
+  labels:
+    app: kafka-source
+spec:
+  bootstrapServers:
+    - kafka-sebi-avat6ar.c.aivencloud.com:18981
+  topics:
+    - agents-messages
+  ceOverrides:
+    extensions:
+      datacontenttype: application/json
+  consumerGroup: agents
+  sink:
+    uri: http://simple-transform-jsonata.sail.svc.cluster.local
+  ordering: ordered
+  initialOffset: latest
+  net:
+    tls:
+      caCert:
+        secretKeyRef:
+          name: kafka-tls
+          key: ca.pem
+      cert:
+        secretKeyRef:
+          name: kafka-tls
+          key: service.cert
+      key:
+        secretKeyRef:
+          name: kafka-tls
+          key: service.key
+      enable: true
+  consumers: 1

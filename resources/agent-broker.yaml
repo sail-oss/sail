@@ -1,0 +1,13 @@
+﻿apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: agent-broker
+  annotations:
+    eventing.knative.dev/broker.class: Kafka
+  labels:
+    app.kubernetes.io/part-of: broker-app
+spec:
+  config:
+    apiVersion: v1
+    kind: ConfigMap
+    name: kafka-broker-config

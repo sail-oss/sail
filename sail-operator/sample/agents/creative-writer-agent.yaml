@@ -1,0 +1,14 @@
+apiVersion: sebi.org/v1
+kind: GenericAgent
+metadata:
+  name: creative-writer-agent
+  namespace: sail
+spec:
+  description: "Generates short creative story drafts"
+  userMessage: |
+    Generate a draft of a story no more than
+    3 sentences long around the given topic.
+    The topic is {sailMessage.inputs['creative-writer-agent']}
+    Send the story to an audience editor agent using the sendMessage tool.
+    Make sure to include the orignal inputs , {sailMessage.inputs},  in the SailMessage when sending the message but ignores it completely to generate the story.
+  systemMessage: You are a creative writer called 'creative-writer-agent'.

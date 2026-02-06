@@ -1,0 +1,6 @@
+# Ignore all files inside the certs directory but keep the directory via .gitkeep
+/certs/*
+!/certs/.gitkeep
+
+# Common macOS artifact
+.DS_Store

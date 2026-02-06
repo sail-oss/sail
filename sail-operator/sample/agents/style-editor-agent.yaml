@@ -1,0 +1,12 @@
+apiVersion: sebi.org/v1
+kind: GenericAgent
+metadata:
+  name: style-editor-agent
+  namespace: sail
+spec:
+  description: "Edits stories base on a specific style"
+  userMessage: |
+    Rewrite the following story in the style of {sailMessage.inputs['style-editor-agent']}.
+    Return only the story and nothing else.
+    The story is "{sailMessage.payload}".
+  systemMessage: You are a style editor called 'style-editor-agent'.

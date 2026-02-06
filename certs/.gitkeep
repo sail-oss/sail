@@ -1,0 +1,2 @@
+# Keeps the certs/ directory in git while its contents are ignored.
+# Do NOT put secrets in this file.

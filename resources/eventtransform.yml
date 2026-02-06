@@ -1,0 +1,22 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: EventTransform
+metadata:
+  name: simple-transform
+spec:
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: agent-broker
+  jsonata:
+    expression: |
+      {
+        "specversion": "1.0",
+        "id": id,
+        "time": time,
+        "type": type,
+        "source": source,
+        "mycustomfield": "customvalue",
+        "targetagent": data.to,
+        "data": $.data
+      }

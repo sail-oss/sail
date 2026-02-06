@@ -1,0 +1,14 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: chatbot-trigger
+spec:
+  broker: default
+  filters:
+    - exact:
+        target: content-writer-agent
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: serverless-chatbot
