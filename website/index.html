@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAIL — Serverless AI Layer</title>
+  <meta name="description" content="SAIL is a Kubernetes-native, event-driven multi-agent platform. Define AI agents as Kubernetes custom resources and wire them together into collaborative pipelines — no routing code, just prompts." />
+  <meta property="og:title" content="SAIL — Serverless AI Layer" />
+  <meta property="og:description" content="Kubernetes-native, event-driven multi-agent AI. Define agents as CRs. Wire them with prompts. Ship." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>" />
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="SAIL Home">
+        <div class="nav-logo-mark">S</div>
+        <span class="nav-logo-text">SAIL</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#why">Why SAIL</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="quickstart.html">Quickstart</a></li>
+        <li><a href="https://github.com/sail-oss/sail" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="quickstart.html" class="nav-cta">Get Started →</a></li>
+      </ul>
+
+      <button class="nav-menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor">
+          <rect y="3" width="22" height="2" rx="1"/>
+          <rect y="10" width="22" height="2" rx="1"/>
+          <rect y="17" width="22" height="2" rx="1"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ───────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-bg" aria-hidden="true">
+      <!-- Decorative gear SVGs -->
+      <svg class="gear-decoration" style="width:400px;height:400px;top:-100px;right:-50px" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 15a35 35 0 1 1 0 70A35 35 0 0 1 50 15zm0 10a25 25 0 1 0 0 50 25 25 0 0 0 0-50z" fill="#b5651d"/>
+        <rect x="47" y="5" width="6" height="15" rx="2" fill="#b5651d"/>
+        <rect x="47" y="80" width="6" height="15" rx="2" fill="#b5651d"/>
+        <rect x="5" y="47" width="15" height="6" rx="2" fill="#b5651d"/>
+        <rect x="80" y="47" width="15" height="6" rx="2" fill="#b5651d"/>
+        <rect x="18" y="18" width="6" height="15" rx="2" transform="rotate(-45 18 18)" fill="#b5651d"/>
+        <rect x="76" y="18" width="6" height="15" rx="2" transform="rotate(45 76 18)" fill="#b5651d"/>
+        <rect x="18" y="76" width="6" height="15" rx="2" transform="rotate(45 18 76)" fill="#b5651d"/>
+        <rect x="76" y="76" width="6" height="15" rx="2" transform="rotate(-45 76 76)" fill="#b5651d"/>
+      </svg>
+      <svg class="gear-decoration reverse" style="width:200px;height:200px;bottom:60px;left:5%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 20a30 30 0 1 1 0 60A30 30 0 0 1 50 20zm0 8a22 22 0 1 0 0 44 22 22 0 0 0 0-44z" fill="#c9a84c"/>
+        <rect x="47" y="8" width="6" height="14" rx="2" fill="#c9a84c"/>
+        <rect x="47" y="78" width="6" height="14" rx="2" fill="#c9a84c"/>
+        <rect x="8" y="47" width="14" height="6" rx="2" fill="#c9a84c"/>
+        <rect x="78" y="47" width="14" height="6" rx="2" fill="#c9a84c"/>
+      </svg>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge animate-in">
+          <span class="hex-badge">⚙ Kubernetes-Native · Event-Driven · Multi-Agent</span>
+        </div>
+        <h1 class="hero-title animate-in animate-delay-1">
+          <span class="accent">SAIL</span><br/>
+          Serverless AI Layer
+        </h1>
+        <p class="hero-subtitle animate-in animate-delay-2">
+          Where AI Agents Meet Kubernetes Infrastructure
+        </p>
+        <p class="hero-desc animate-in animate-delay-3">
+          Define collaborative AI agents as Kubernetes custom resources.
+          SAIL wires them into event-driven pipelines — no routing code,
+          no service discovery, no boilerplate. Just prompts and Kubernetes.
+        </p>
+        <div class="hero-actions animate-in animate-delay-4">
+          <a href="quickstart.html" class="btn btn-primary">
+            ⚙ Get Started in 5 Minutes
+          </a>
+          <a href="https://github.com/sail-oss/sail" class="btn btn-outline" target="_blank" rel="noopener">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-terminal animate-in animate-delay-2" aria-label="Terminal demonstration" role="img">
+        <div class="terminal-bar">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot amber"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">sail — bash</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-comment"># 1 · Install SAIL onto your cluster</div>
+          <div><span class="terminal-prompt">$ </span><span class="terminal-cmd">./scripts/install-sail-resources.sh --skip-tls \</span></div>
+          <div><span class="terminal-cmd">&nbsp;&nbsp;kafka-bootstrap.kafka.svc:9092</span></div>
+          <div class="terminal-out">&nbsp;</div>
+          <div class="terminal-comment"># 2 · Define your first agent (YAML, ~10 lines)</div>
+          <div><span class="terminal-prompt">$ </span><span class="terminal-cmd">kubectl apply -f creative-writer-agent.yaml</span></div>
+          <div class="terminal-success">✔ genericagent.sebi.org/creative-writer-agent created</div>
+          <div class="terminal-out">&nbsp;</div>
+          <div class="terminal-comment"># 3 · Fire a message — watch agents collaborate</div>
+          <div><span class="terminal-prompt">$ </span><span class="terminal-cmd">make agents-trigger</span></div>
+          <div class="terminal-out">→ creative-writer-agent ✦</div>
+          <div class="terminal-out">→ audience-editor-agent ✦</div>
+          <div class="terminal-out">→ style-editor-agent ✦</div>
+          <div class="terminal-success">✔ Pipeline complete</div>
+          <div><span class="terminal-prompt">$ </span><span class="terminal-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why SAIL ────────────────────────────────────────── -->
+  <section id="why" aria-labelledby="whyTitle">
+    <div class="section-inner">
+      <p class="section-label">⚙ The Problem We Solve</p>
+      <h2 class="section-title" id="whyTitle">Why SAIL?</h2>
+      <p class="section-subtitle">
+        Building multi-agent AI systems is complex. Routing, discovery, scaling, retries —
+        all of that is infrastructure work, not AI work. SAIL absorbs it.
+      </p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">📜</div>
+          <h3>Prompts, Not Plumbing</h3>
+          <p>
+            Write a YAML with a system prompt and a user prompt.
+            SAIL's operator automatically creates the Knative Service,
+            Trigger, and Redis registry entry. You never write routing code.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">🔗</div>
+          <h3>Agents Discover Each Other</h3>
+          <p>
+            At runtime, each agent queries Redis and learns the names and
+            descriptions of every other deployed agent. The LLM decides
+            who to call next — just like a team of engineers in Slack.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">⚡</div>
+          <h3>Serverless Scale-to-Zero</h3>
+          <p>
+            Built on Knative Serving. Idle agents consume zero resources.
+            Messages queue in Kafka; agents spin up on demand. Pay only
+            for what you use, even at enterprise scale.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">🌊</div>
+          <h3>Event-Driven by Default</h3>
+          <p>
+            Every message is a CloudEvent routed through the Knative Broker.
+            Human inputs, agent outputs, and system triggers are all the same
+            format. Add new agents without touching existing ones.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">🔒</div>
+          <h3>Kubernetes-Native Security</h3>
+          <p>
+            No secrets in code. Kubernetes Secrets inject the OpenAI key,
+            Redis host, and Kafka TLS certificates. RBAC, namespaces, and
+            network policies work exactly as you expect.
+          </p>
+        </div>
+
+        <div class="why-card">
+          <div class="why-icon">🛠</div>
+          <h3>Bring Your Own Agent</h3>
+          <p>
+            Set <code>agentClassName</code> to extend the base runtime
+            with custom Java logic. SAIL derives the container image
+            automatically from the class name. Custom ≠ complex.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Architecture ────────────────────────────────────── -->
+  <section id="architecture" class="arch-section" aria-labelledby="archTitle">
+    <div class="section-inner">
+      <p class="section-label">⚙ Under the Hood</p>
+      <h2 class="section-title" id="archTitle">How It Works</h2>
+      <p class="section-subtitle">
+        SAIL orchestrates three independent components and a cloud-native messaging backbone.
+        Messages flow from Kafka through Knative into agent pods and back — fully automated.
+      </p>
+
+      <div class="arch-diagram" role="img" aria-label="Architecture diagram showing message flow from Kafka through Knative Eventing to agents and back">
+<pre>  Human / external system
+        │
+        │  POST JSON → Kafka "agents-messages"
+        ▼
+  ┌─────────────┐
+  │  KafkaSource │  consumes agents-messages
+  └──────┬──────┘
+         │ CloudEvent
+         ▼
+  ┌─────────────────┐
+  │  EventTransform  │  JSONata: data.to → "targetagent" CE attribute
+  └────────┬─────────┘
+           │
+           ▼
+  ┌──────────────────┐
+  │  Knative Broker  │  routes on CE attribute
+  └────────┬─────────┘
+           │
+           ▼
+  ┌──────────────────────┐     ┌──────────────────────┐
+  │  Trigger             │     │  Knative Service      │
+  │  filter: targetagent │────▶│  sail-base-openid     │
+  └──────────────────────┘     │  (agent container)    │
+                                └──────────┬───────────┘
+                                           │
+                                    1. Render Qute prompt
+                                    2. Query Redis for peers
+                                    3. Call OpenAI (LangChain4j)
+                                    4. LLM calls sendMessage MCP tool
+                                           │
+                                           ▼
+                                ┌──────────────────┐
+                                │  sail-mcp-server  │  → Kafka
+                                └──────────────────┘</pre>
+      </div>
+
+      <div class="arch-flow">
+        <div class="flow-step">
+          <span class="flow-step-num">STEP 01</span>
+          <h4>Operator provisions</h4>
+          <p>Watches <code>GenericAgent</code> CRs. Creates Knative Service, Trigger, and Redis entry.</p>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step-num">STEP 02</span>
+          <h4>Message arrives</h4>
+          <p>JSON posted to Kafka is consumed by KafkaSource, transformed into a CloudEvent.</p>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step-num">STEP 03</span>
+          <h4>Trigger routes</h4>
+          <p>Knative Broker checks the <code>targetagent</code> attribute and delivers to the right service.</p>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step-num">STEP 04</span>
+          <h4>Agent thinks</h4>
+          <p>Renders prompt, discovers peers from Redis, calls OpenAI via LangChain4j.</p>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step-num">STEP 05</span>
+          <h4>Loop continues</h4>
+          <p>LLM calls <code>sendMessage</code> MCP tool → MCP server publishes to Kafka → next agent activates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Components ──────────────────────────────────────── -->
+  <section id="components" aria-labelledby="componentsTitle">
+    <div class="section-inner">
+      <p class="section-label">⚙ The Building Blocks</p>
+      <h2 class="section-title" id="componentsTitle">Three Independent Components</h2>
+      <p class="section-subtitle">
+        Each subproject is fully standalone — no shared modules, no parent POM.
+        Deploy only what you need.
+      </p>
+
+      <div class="components-grid">
+        <div class="component-card">
+          <span class="component-tag">sail-operator</span>
+          <h3>Kubernetes Operator</h3>
+          <p>
+            Watches <code>GenericAgent</code> custom resources (CRD group <code>sebi.org/v1</code>)
+            and provisions a Knative Service + Trigger for each agent using server-side apply.
+            Stores agent metadata in Redis for peer discovery. Uses a finalizer to clean up
+            Redis keys on deletion.
+          </p>
+        </div>
+
+        <div class="component-card">
+          <span class="component-tag">sail-mcp-server</span>
+          <h3>MCP Tool Server</h3>
+          <p>
+            Stateless HTTP/SSE server exposing a single <code>sendMessage</code> tool via the
+            Model Context Protocol. All agents call this shared endpoint to publish
+            <code>SailMessage</code> objects to the <code>agents-messages</code> Kafka topic.
+          </p>
+        </div>
+
+        <div class="component-card">
+          <span class="component-tag">sail-base-openid</span>
+          <h3>Agent Runtime</h3>
+          <p>
+            Receives CloudEvents from Knative, renders Qute prompt templates with <code>SailMessage</code>
+            context, queries Redis for available agents, then calls OpenAI via LangChain4j.
+            The LLM uses MCP tools to route messages onward.
+          </p>
+        </div>
+      </div>
+
+      <div class="steam-divider" aria-hidden="true">
+        <span class="steam-divider-icon">⚙</span>
+      </div>
+
+      <p class="section-label">⚙ The Stack</p>
+      <h3 style="margin-bottom:1rem;font-size:1.3rem">Built On Technologies You Know</h3>
+      <div class="stack-grid">
+        <span class="stack-pill"><strong>Quarkus</strong> — Fast JVM / native runtime</span>
+        <span class="stack-pill"><strong>Knative</strong> Serving + Eventing</span>
+        <span class="stack-pill"><strong>Apache Kafka</strong> — Message backbone</span>
+        <span class="stack-pill"><strong>LangChain4j</strong> — LLM abstraction</span>
+        <span class="stack-pill"><strong>OpenAI</strong> API</span>
+        <span class="stack-pill"><strong>Redis</strong> — Agent registry</span>
+        <span class="stack-pill"><strong>MCP</strong> — Model Context Protocol</span>
+        <span class="stack-pill"><strong>Java 21</strong> — Virtual threads ready</span>
+        <span class="stack-pill"><strong>JOSDK</strong> — Java Operator SDK</span>
+        <span class="stack-pill"><strong>Qute</strong> — Prompt templating</span>
+        <span class="stack-pill"><strong>Strimzi</strong> — In-cluster Kafka</span>
+        <span class="stack-pill"><strong>Kubernetes 1.28+</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GenericAgent YAML ────────────────────────────────── -->
+  <section id="agent-yaml" class="yaml-section" aria-labelledby="yamlTitle">
+    <div class="section-inner">
+      <p class="section-label">⚙ Define an Agent</p>
+      <h2 class="section-title" id="yamlTitle">~10 Lines of YAML. That's an Agent.</h2>
+      <p class="section-subtitle">
+        No code required for standard agents. Write a prompt, give it a name,
+        apply it to Kubernetes — SAIL handles the rest.
+      </p>
+
+      <div class="yaml-split">
+        <div>
+          <div class="code-block-wrap">
+            <pre><code class="language-yaml">apiVersion: sebi.org/v1
+kind: GenericAgent
+metadata:
+  name: creative-writer-agent
+  namespace: sail
+spec:
+  description: "Generates short creative story drafts"
+  systemMessage: |
+    You are a creative writer called
+    'creative-writer-agent'.
+  userMessage: |
+    Generate a 3-sentence story about:
+    {sailMessage.inputs['creative-writer-agent']}
+
+    Send the result to an audience editor agent
+    using the sendMessage tool. Include the
+    original inputs {sailMessage.inputs}.</code></pre>
+            <button class="copy-btn" data-target="yaml-example" aria-label="Copy YAML to clipboard">COPY</button>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:1.25rem">What Each Field Does</h3>
+          <ul class="yaml-annotation">
+            <li>
+              <span class="tag">description</span>
+              Stored in Redis. Other agents read this to learn what this agent does.
+            </li>
+            <li>
+              <span class="tag">systemMessage</span>
+              The LLM's persona and role. Plain text — no templating needed here.
+            </li>
+            <li>
+              <span class="tag">userMessage</span>
+              A <strong>Qute template</strong>. References <code>sailMessage</code> — the incoming message, inputs, and sender name.
+            </li>
+            <li>
+              <span class="tag">inputs['key']</span>
+              Each agent reads its own named input from the shared inputs map passed through the pipeline.
+            </li>
+            <li>
+              <span class="tag">sendMessage tool</span>
+              The LLM is instructed to call the MCP tool when it's ready to pass results downstream.
+            </li>
+          </ul>
+
+          <div class="note" style="margin-top:1.5rem">
+            <strong>Optional:</strong> Set <code>agentClassName</code> to a fully-qualified Java class
+            to use a custom container image. SAIL derives the image name automatically.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Quickstart Preview ──────────────────────────────── -->
+  <section id="quickstart-preview" aria-labelledby="qsPreviewTitle">
+    <div class="section-inner">
+      <p class="section-label">⚙ Ready to Build</p>
+      <h2 class="section-title" id="qsPreviewTitle">Up and Running in 4 Steps</h2>
+      <p class="section-subtitle">
+        From zero to a running 3-agent pipeline in under 10 minutes
+        (assuming you have a Kubernetes cluster).
+      </p>
+
+      <div class="quickstart-steps">
+        <div class="qs-step">
+          <div class="qs-num">01</div>
+          <div class="qs-content">
+            <h3>Install the cluster stack</h3>
+            <p>
+              One script sets up minikube with Knative Serving, Knative Eventing,
+              Strimzi Kafka, and Redis — fully automated for local dev.
+            </p>
+            <div class="code-block-wrap">
+              <pre><code>./scripts/install-knative-dev.sh
+# Then in a separate terminal:
+minikube tunnel --profile sail</code></pre>
+              <button class="copy-btn" aria-label="Copy step 1 commands">COPY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="qs-step">
+          <div class="qs-num">02</div>
+          <div class="qs-content">
+            <h3>Install SAIL resources</h3>
+            <p>
+              Applies the CRD, operator, MCP server, and all eventing resources
+              in the correct order, waiting for each to become ready.
+            </p>
+            <div class="code-block-wrap">
+              <pre><code>./scripts/install-sail-resources.sh \
+  --skip-tls \
+  sail-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092</code></pre>
+              <button class="copy-btn" aria-label="Copy step 2 commands">COPY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="qs-step">
+          <div class="qs-num">03</div>
+          <div class="qs-content">
+            <h3>Create your first agents</h3>
+            <p>
+              Apply the sample 3-agent pipeline: <em>creative writer → audience editor → style editor</em>.
+            </p>
+            <div class="code-block-wrap">
+              <pre><code>cd sail-operator && make agents-add
+# Or apply individually:
+kubectl apply -f sail-operator/sample/agents/creative-writer-agent.yaml</code></pre>
+              <button class="copy-btn" aria-label="Copy step 3 commands">COPY</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="qs-step">
+          <div class="qs-num">04</div>
+          <div class="qs-content">
+            <h3>Trigger the pipeline</h3>
+            <p>
+              Publish a message to the <code>creative-writer-agent</code> via Kafka.
+              Watch all three agents collaborate automatically.
+            </p>
+            <div class="code-block-wrap">
+              <pre><code>kafka-console-producer.sh \
+  --bootstrap-server &lt;bootstrap-server&gt; \
+  --topic agents-messages \
+  --property parse.headers=true \
+  --property headers=content-type:application/json \
+  &lt; sail-operator/sample/sail-messages/human-to-creative-writer.json</code></pre>
+              <button class="copy-btn" aria-label="Copy step 4 commands">COPY</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:3rem">
+        <a href="quickstart.html" class="btn btn-primary">
+          Read the Full Quickstart Guide →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────────────────────── -->
+  <section class="cta-section" aria-labelledby="ctaTitle">
+    <div class="cta-inner">
+      <p class="section-label" style="text-align:center">⚙ Start Building</p>
+      <h2 id="ctaTitle">Ship Your First AI Pipeline Today</h2>
+      <p>
+        SAIL is open source, Kubernetes-native, and designed for engineers
+        who want powerful multi-agent AI without the infrastructure overhead.
+      </p>
+      <div class="cta-actions">
+        <a href="quickstart.html" class="btn btn-primary">⚙ Quickstart Guide</a>
+        <a href="https://github.com/sail-oss/sail" class="btn btn-outline" target="_blank" rel="noopener">
+          View Source on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">S</div>
+          <span class="footer-logo-text">SAIL</span>
+        </div>
+        <p class="footer-desc">
+          Serverless AI Layer — a Kubernetes-native, event-driven multi-agent platform
+          built on Quarkus, Knative, and Kafka.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-link-group">
+          <h4>Documentation</h4>
+          <ul>
+            <li><a href="quickstart.html">Quickstart</a></li>
+            <li><a href="https://github.com/sail-oss/sail/blob/main/docs/knative-installation.md" target="_blank" rel="noopener">Knative Setup</a></li>
+            <li><a href="https://github.com/sail-oss/sail/blob/main/docs/sail-resources.md" target="_blank" rel="noopener">Resources Deep-Dive</a></li>
+            <li><a href="https://github.com/sail-oss/sail/blob/main/README.md" target="_blank" rel="noopener">Full README</a></li>
+          </ul>
+        </div>
+        <div class="footer-link-group">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="https://github.com/sail-oss/sail" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://github.com/sail-oss/sail/issues" target="_blank" rel="noopener">Issues</a></li>
+            <li><a href="https://github.com/sail-oss/sail/releases" target="_blank" rel="noopener">Releases</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 SAIL Contributors. Open source under the Apache 2.0 License.</p>
+      <p>Built with Quarkus · Knative · Kafka</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
