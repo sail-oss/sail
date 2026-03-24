@@ -1,0 +1,14 @@
+# kafka-broker-config must live in knative-eventing so the Kafka Broker
+# controller can read it. Set bootstrap.servers to match your Kafka cluster.
+# The broker-secret (referenced below) must also be in knative-eventing — see
+# docs/sail-resources.md for how to create it.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-broker-config
+  namespace: knative-eventing
+data:
+  default.topic.partitions: "2"
+  default.topic.replication.factor: "2"
+  bootstrap.servers: "<KAFKA_BOOTSTRAP_SERVER>"
+  auth.secret.ref.name: broker-secret

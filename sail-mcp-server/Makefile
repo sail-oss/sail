@@ -1,28 +1,11 @@
-# Makefile: convenience targets for managing sample agents and building images
+# Makefile: convenience targets for building and pushing the MCP server image
 
-IMAGE_REPO  ?= sebi2706/sail-operator
+IMAGE_REPO  ?= sebi2706/sail-mcp-server
 IMAGE_TAG   ?= latest
 PLATFORMS   ?= linux/amd64,linux/arm64
 BUILDER     ?= sail-builder
 
-.PHONY: agents-add agents-delete agents-delete-all agents-recreate agents-list \
-        docker-build docker-push docker-multiarch docker-builder-create
-
-agents-add:
-	kubectl apply -R -f sample/agents
-
-agents-delete:
-	kubectl delete -R -f sample/agents --ignore-not-found
-
-agents-delete-all:
-	kubectl delete genericagents --all --ignore-not-found
-
-agents-recreate: agents-delete agents-add
-
-agents-list:
-	kubectl get genericagents -o wide || kubectl get -R -f sample/agents
-
-# ─── Docker image targets ───────────────────────────────────────────────────
+.PHONY: docker-build docker-multiarch docker-builder-create
 
 ## Build the JAR and create a single-platform image for the local daemon.
 docker-build:

@@ -56,6 +56,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: QUARKUS_HTTP_CORS_ENABLED
               value: "true"
+            - name: QUARKUS_PROFILE
+              value: prod-plain  
           image: docker.io/sebi2706/sail-mcp-server:0.3
           imagePullPolicy: Always
           name: sail-mcp-server
@@ -66,7 +68,7 @@ spec:
           volumeMounts:
             - mountPath: /etc/certs
               name: certs-volume
-              readOnly: false
+              readOnly: true
       volumes:
         - name: certs-volume
           secret:
@@ -76,5 +78,7 @@ spec:
                 path: client.keystore.p12
               - key: trustore
                 path: client.truststore.jks
+            # Set optional: true when deploying against a plaintext (non-TLS) Kafka cluster.
+            # The pod will start normally even if the secret does not exist.
             optional: false
             secretName: agents-kafka-secrets

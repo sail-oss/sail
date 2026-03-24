@@ -1,0 +1,27 @@
+# EventTransform reads CloudEvents from the KafkaSource and re-emits them to
+# the agent-broker with an extra "targetagent" attribute extracted via JSONata
+# from data.to. This attribute is what the per-agent Triggers filter on.
+apiVersion: eventing.knative.dev/v1alpha1
+kind: EventTransform
+metadata:
+  name: simple-transform
+  namespace: sail
+spec:
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: agent-broker
+      namespace: sail
+  jsonata:
+    expression: |
+      {
+        "specversion": "1.0",
+        "id": id,
+        "time": time,
+        "type": type,
+        "source": source,
+        "mycustomfield": "customvalue",
+        "targetagent": data.to,
+        "data": $.data
+      }

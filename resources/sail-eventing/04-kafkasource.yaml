@@ -1,0 +1,42 @@
+# KafkaSource consumes the agents-messages Kafka topic and forwards events to
+# the EventTransform. Set bootstrapServers to match your Kafka cluster.
+# The kafka-tls secret (PEM files) must exist in the sail namespace — see
+# docs/sail-resources.md for how to create it.
+apiVersion: sources.knative.dev/v1
+kind: KafkaSource
+metadata:
+  name: kafka-source
+  namespace: sail
+  labels:
+    app: kafka-source
+spec:
+  bootstrapServers:
+    - "<KAFKA_BOOTSTRAP_SERVER>"
+  topics:
+    - agents-messages
+  ceOverrides:
+    extensions:
+      datacontenttype: application/json
+  consumerGroup: agents
+  sink:
+    # The EventTransform (simple-transform) exposes a ClusterIP service whose
+    # name follows the pattern <metadata.name>-jsonata.<namespace>.svc.cluster.local
+    uri: http://simple-transform-jsonata.sail.svc.cluster.local
+  ordering: ordered
+  initialOffset: latest
+  net:
+    tls:
+      enable: true
+      caCert:
+        secretKeyRef:
+          name: kafka-tls
+          key: ca.pem
+      cert:
+        secretKeyRef:
+          name: kafka-tls
+          key: service.cert
+      key:
+        secretKeyRef:
+          name: kafka-tls
+          key: service.key
+  consumers: 1
