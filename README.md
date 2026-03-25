@@ -45,25 +45,25 @@ No service discovery code. No routing code. Just prompts and Kubernetes.
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                          Kubernetes Cluster                             │
 │                                                                         │
-│  ┌─────────────────┐    ┌──────────────────┐    ┌───────────────────┐  │
+│  ┌─────────────────┐    ┌───────────────────┐    ┌───────────────────┐  │
 │  │  sail-operator  │    │  sail-mcp-server  │    │  sail-base-openid │  │
-│  │                 │    │                  │    │  (agent runtime)  │  │
+│  │                 │    │                   │    │  (agent runtime)  │  │
 │  │  Watches        │    │  HTTP/SSE server  │    │                   │  │
 │  │  GenericAgent   │    │  exposes the      │    │  Receives         │  │
 │  │  CRs            │    │  sendMessage MCP  │    │  CloudEvents      │  │
 │  │                 │    │  tool             │    │  → calls LLM      │  │
-│  │  Creates:       │    │                  │    │  → calls MCP tool │  │
-│  │  · Knative Svc  │    │  Publishes to    │    │                   │  │
-│  │  · Trigger      │    │  Kafka           │    │  One pod per      │  │
-│  │  · Redis entry  │    │                  │    │  GenericAgent CR  │  │
-│  └─────────────────┘    └──────────────────┘    └───────────────────┘  │
+│  │  Creates:       │    │                   │    │  → calls MCP tool │  │
+│  │  · Knative Svc  │    │  Publishes to     │    │                   │  │
+│  │  · Trigger      │    │  Kafka            │    │  One pod per      │  │
+│  │  · Redis entry  │    │                   │    │  GenericAgent CR  │  │
+│  └─────────────────┘    └───────────────────┘    └───────────────────┘  │
 │                                                                         │
-│  ┌──────────┐   ┌───────────────────────────────────────────────────┐  │
-│  │  Redis   │   │                 Knative Eventing                  │  │
-│  │          │   │  KafkaSource → EventTransform → Broker → Trigger  │  │
-│  │  Agent   │   └───────────────────────────────────────────────────┘  │
+│  ┌──────────┐   ┌────────────────────────────────────────────────────┐  │
+│  │  Redis   │   │                  Knative Eventing                  │  │
+│  │          │   │  KafkaSource → EventTransform → Broker → Trigger   │  │
+│  │  Agent   │   └────────────────────────────────────────────────────┘  │
 │  │  registry│                                                           │
-│  └──────────┘   ┌────────────┐                                         │
+│  └──────────┘   ┌────────────┐                                          │
 │                 │   Kafka    │  topic: agents-messages                  │
 │                 └────────────┘                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -77,12 +77,12 @@ No service discovery code. No routing code. Just prompts and Kubernetes.
         │  POST JSON to Kafka topic "agents-messages"
         │  { "to": "creative-writer-agent", "from": "human", "inputs": {...} }
         ▼
-  ┌─────────────┐
+  ┌──────────────┐
   │  KafkaSource │  consumes agents-messages
-  └──────┬──────┘
+  └──────┬───────┘
          │ CloudEvent
          ▼
-  ┌─────────────────┐
+  ┌──────────────────┐
   │  EventTransform  │  JSONata: extracts data.to → sets "targetagent" attribute
   └────────┬─────────┘
            │ enriched CloudEvent
@@ -108,9 +108,9 @@ No service discovery code. No routing code. Just prompts and Kubernetes.
              │  3. call OpenAI via LangChain4j
              │  4. LLM calls sendMessage(to="audience-editor-agent", ...)
              ▼
-  ┌──────────────────┐
+  ┌───────────────────┐
   │  sail-mcp-server  │  MCP tool: sendMessage → publishes to Kafka
-  └──────────────────┘
+  └───────────────────┘
              │
              ▼  (loop continues for each downstream agent)
         Kafka "agents-messages"
