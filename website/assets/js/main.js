@@ -1,6 +1,7 @@
 /* ============================================================
    SAIL Website — main.js
-   Handles: mobile menu, copy buttons, TOC active state
+   Handles: mobile menu, copy buttons, TOC active state,
+            light/dark theme toggle
    ============================================================ */
 
 (function () {
@@ -22,6 +23,23 @@
         navLinks.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
       });
+    });
+  }
+
+  /* ── Light / Dark Theme Toggle ──────────────────────────── */
+  var themeToggle = document.getElementById('themeToggle');
+
+  if (themeToggle) {
+    // Sync aria-label with current theme on load
+    var initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    themeToggle.setAttribute('aria-label', initialTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+
+    themeToggle.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('sail-theme', next); } catch (e) { /* private browsing */ }
+      themeToggle.setAttribute('aria-label', next === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
     });
   }
 
