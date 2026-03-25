@@ -369,12 +369,12 @@ kubectl logs -n sail -l serving.knative.dev/service=creative-writer-agent-svc -f
 <pre>human-to-creative-writer.json
         │
         ▼  (POST to Kafka topic "agents-messages")
-  ┌─────────────┐
+  ┌──────────────┐
   │  KafkaSource │  Converts Kafka record to CloudEvent
-  └──────┬──────┘
+  └──────┬───────┘
          │
          ▼
-  ┌─────────────────┐
+  ┌──────────────────┐
   │  EventTransform  │  JSONata extracts data.to
   │                  │  Sets CE attribute: targetagent=creative-writer-agent
   └────────┬─────────┘
@@ -398,19 +398,19 @@ kubectl logs -n sail -l serving.knative.dev/service=creative-writer-agent-svc -f
   │  2. Deserializes SailMessage          │
   │  3. Renders Qute prompt template      │
   │  4. Queries Redis: GET genericagent:* │
-  │     → learns about audience-editor,  │
-  │       style-editor                   │
+  │     → learns about audience-editor,   │
+  │       style-editor                    │
   │  5. Calls OpenAI via LangChain4j      │
-  │  6. LLM calls sendMessage(           │
-  │       to="audience-editor-agent",    │
-  │       payload="Once upon a time..."  │
-  │     )                                │
+  │  6. LLM calls sendMessage(            │
+  │       to="audience-editor-agent",     │
+  │       payload="Once upon a time..."   │
+  │     )                                 │
   └──────────────────┬────────────────────┘
                      │
                      ▼
-  ┌──────────────────┐
+  ┌───────────────────┐
   │  sail-mcp-server  │  Publishes new SailMessage to Kafka
-  └──────────────────┘
+  └───────────────────┘
                      │
                      ▼  (loop repeats for audience-editor, then style-editor)
               agents-messages Kafka topic</pre>

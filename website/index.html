@@ -226,12 +226,12 @@
         │
         │  POST JSON → Kafka "agents-messages"
         ▼
-  ┌─────────────┐
+  ┌──────────────┐
   │  KafkaSource │  consumes agents-messages
-  └──────┬──────┘
+  └──────┬───────┘
          │ CloudEvent
          ▼
-  ┌─────────────────┐
+  ┌──────────────────┐
   │  EventTransform  │  JSONata: data.to → "targetagent" CE attribute
   └────────┬─────────┘
            │
@@ -241,21 +241,21 @@
   └────────┬─────────┘
            │
            ▼
-  ┌──────────────────────┐     ┌──────────────────────┐
+  ┌──────────────────────┐     ┌───────────────────────┐
   │  Trigger             │     │  Knative Service      │
   │  filter: targetagent │────▶│  sail-base-openid     │
   └──────────────────────┘     │  (agent container)    │
-                                └──────────┬───────────┘
-                                           │
+                               └──────────┬────────────┘
+                                          │
                                     1. Render Qute prompt
                                     2. Query Redis for peers
                                     3. Call OpenAI (LangChain4j)
                                     4. LLM calls sendMessage MCP tool
-                                           │
-                                           ▼
-                                ┌──────────────────┐
+                                          │
+                                          ▼
+                                ┌───────────────────┐
                                 │  sail-mcp-server  │  → Kafka
-                                └──────────────────┘</pre>
+                                └───────────────────┘</pre>
       </div>
 
       <div class="arch-flow">
