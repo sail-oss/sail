@@ -1050,3 +1050,86 @@ tr:hover td { background: rgba(181, 101, 29, 0.04); }
 .animate-delay-2 { animation-delay: 0.2s; }
 .animate-delay-3 { animation-delay: 0.3s; }
 .animate-delay-4 { animation-delay: 0.4s; }
+
+/* ── Theme Toggle Button ────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-copper);
+  cursor: pointer;
+  padding: 0.35rem;
+  color: var(--parchment-dim);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+.theme-toggle:hover {
+  color: var(--brass-light);
+  border-color: var(--brass);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+/* Default (dark mode): show sun icon, hide moon */
+.theme-icon-moon { display: none; }
+
+/* Light mode: show moon icon, hide sun */
+[data-theme="light"] .theme-icon-sun  { display: none; }
+[data-theme="light"] .theme-icon-moon { display: block; }
+
+/* ── Light Mode Theme ───────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-void:        #faf6f0;
+  --bg-dark:        #f2ebe0;
+  --bg-mid:         #ebe0d0;
+  --bg-panel:       #f5ede0;
+  --bg-panel-hover: #ecddd0;
+  --bg-code:        #f5f0e8;
+
+  --parchment:      #2d1d0e;
+  --parchment-dim:  #4a3020;
+  --parchment-muted:#7a5c44;
+
+  --green-term:     #1a7035;
+
+  --border-copper:  rgba(181, 101, 29, 0.35);
+  --border-brass:   rgba(160, 120, 40, 0.3);
+
+  --shadow-copper:  0 0 20px rgba(181, 101, 29, 0.2);
+  --shadow-brass:   0 0 30px rgba(201, 168, 76, 0.1);
+}
+
+/* Nav background in light mode (overrides hardcoded rgba) */
+[data-theme="light"] .nav {
+  background: rgba(250, 246, 240, 0.95);
+}
+
+/* Code/pre border color in light mode */
+[data-theme="light"] code {
+  border-color: rgba(26, 112, 53, 0.25);
+}
+[data-theme="light"] pre {
+  border-color: rgba(26, 112, 53, 0.25);
+  border-left-color: var(--green-term);
+}
+
+/* Terminal comment colour in light mode */
+[data-theme="light"] .terminal-comment { color: #8a9070; }
+
+/* Smooth transition when switching themes */
+body,
+.nav,
+.why-card,
+.component-card,
+.flow-step,
+.arch-diagram,
+.hero-terminal,
+.terminal-bar,
+.page-header,
+.footer,
+.cta-section,
+.stack-pill,
+.qs-sidebar {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
