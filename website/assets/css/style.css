@@ -108,7 +108,6 @@ pre {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   overflow-x: auto;
-  font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.6;
   position: relative;
